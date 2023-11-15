@@ -83,25 +83,12 @@ class DownloadView(LoginRequiredMixin, View):
         base_dir = settings.BASE_DIR
         file_to_dowbload = VideoFile.objects.get(uploaded_by = request.user, id=pk)
         file_path = os.path.join(base_dir,"storage" , str(file_to_dowbload.video_file))
-        # file = FileWrapper(open(file_path, 'r'))
-        # response = HttpResponse(file, content_type="image/jpeg")
-        # response['Content-Disposition'] = 'attachment; filename=MyImage.jpg'
-        # return response
-        # file_path = os.path.join(settings.MEDIA_ROOT, path)
-        # print(file_path)
+        
         path = Path(file_path)
         with path.open(mode='rb') as fh:
            response = HttpResponse(fh.read(), content_type="image/jpeg")
-           # response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
            response['Content-Disposition'] = 'attachment; filename=MyImage.jpg'
            return response 
-
-        print(path)
-        # if os.path.exists(file_path):
-        #     with open(file_path, 'rb') as fh:
-        #         response = HttpResponse(fh.read(), content_type="image/jpeg")
-        #         response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
-        #         return response
         raise Http404
         
     
